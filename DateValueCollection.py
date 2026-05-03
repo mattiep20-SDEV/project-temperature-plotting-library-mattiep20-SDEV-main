@@ -10,44 +10,33 @@ class DateValueCollection:
         self._values = {}  # This will store date -> value pairs
 
     def add_value(self, date: datetime.date, value: float):
-        """
-        Add a temperature value for a specific date.
-
-        Args:
-            date: The date (like datetime.date(2020, 1, 1))
-            value: The temperature value (like 25.5)
-
-        Raises:
-            ValueError: If we try to add the same date twice
-        """
+        # Add a date-value pair to the collection.
+        # If the date already exists, raise a ValueError.
         if date in self._values:
-            raise ValueError(f"Date {date} already exists!")
+            raise ValueError(f"Date {date} already exists in collection")
         self._values[date] = value
 
     def get_values(self) -> Dict[datetime.date, float]:
-        
-        # Get all the date-value pairs we have stored. Returns: A dictionary with dates as keys and values as temperatures
-      
-        return self._values.copy()  # Return a copy so they can't change our data
-
+        # Get all values in the collection.
+        return self._values.copy()  # Return a copy to prevent external modification    
     def get_peak_yearly_values(self) -> Dict[datetime.date, float]:
-        
-        # For each year, find the highest temperature and return it with its date. 
-        # Returns: A dictionary where each date is the day with the highest temp for that year
-        
+        # Get the peak (maximum) value for each year in the collection.
         yearly_peaks = {}
 
-        # Go through each date and value we have
+        # Group values by year
+        values_by_year = {}
         for date, value in self._values.items():
             year = date.year
+            if year not in values_by_year:
+                values_by_year[year] = []
+            values_by_year[year].append((date, value))
 
-            # If we haven't seen this year yet, or this value is higher than what we have
-            if year not in yearly_peaks or value > yearly_peaks[year][1]:
-                yearly_peaks[year] = (date, value)
+        # Find peak for each year
+        for year, date_value_pairs in values_by_year.items():
+            # Find the maximum value and its earliest date
+            max_value = max(value for date, value in date_value_pairs)
+            # Get the earliest date with this max value
+            peak_date = min(date for date, value in date_value_pairs if value == max_value)
+            yearly_peaks[peak_date] = max_value
 
-        # Convert back to the format we need: date -> value
-        result = {}
-        for year, (date, value) in yearly_peaks.items():
-            result[date] = value
-
-        return result
+        return yearly_peaks
