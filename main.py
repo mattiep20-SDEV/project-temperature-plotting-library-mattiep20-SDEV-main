@@ -1,7 +1,7 @@
 import datetime
 from DateValueCollection import DateValueCollection
 from TemperatureFileParser import TemperatureFileParser
-# from TemperaturePlotter import TemperaturePlotter
+from TemperaturePlotter import TemperaturePlotter
 
 
 def main():
@@ -31,7 +31,30 @@ def main():
         for date in sorted_dates:
             print(f"    {date}: {values[date]}°C")
 
-    pass
+    ## TemperaturePlotter tests
+    # Create some test data
+    test_values = DateValueCollection()
+    test_values.add_value(datetime.date(2020, 1, 1), 10.0)
+    test_values.add_value(datetime.date(2020, 2, 1), 15.0)
+    test_values.add_value(datetime.date(2020, 3, 1), 20.0)
+    test_values.add_value(datetime.date(2020, 4, 1), 25.0)
+
+    plotter = TemperaturePlotter("test_plot.png")
+    plotter.plot(test_values.get_values())
+    print("Created test_plot.png")
+
+    ## Example usage - both should work when you are finished
+    # Create output directory if it doesn't exist
+    import os
+    os.makedirs("output", exist_ok=True)
+
+    plotter2 = TemperaturePlotter("output/japan_temperatures.png")
+    plotter2.plot(parsed_data['Japan'].get_values())
+    print("Created output/japan_temperatures.png")
+
+    plotter3 = TemperaturePlotter("output/japan_peaks.png")
+    plotter3.plot(parsed_data['Japan'].get_peak_yearly_values())
+    print("Created output/japan_peaks.png")
 
 if __name__ == "__main__":
     main()
