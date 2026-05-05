@@ -24,7 +24,6 @@ def main():
     print("All values:", values.get_values())   
 
     # Test peak yearly values
-    values.add_value(datetime.date(2021, 1, 1), 15.0)
     # Add more values for 2021 to test peak yearly values
     values.add_value(datetime.date(2021, 1, 2), 25.0)  # This should be the peak for 2021
     # Add a lower value for 2021 to ensure it doesn't affect the peak
@@ -40,15 +39,15 @@ def main():
     # For each country, print the number of data points and a few sample values to verify that the parsing worked correctly.
     for country, collection in parsed_data.items():
         # Get all values for this country and print the count and a few samples.
-        values = collection.get_values()
+        all_values = collection.get_values()
         # Print the country name and the number of data points.
-        print(f"  {country}: {len(values)} data points")
+        print(f"  {country}: {len(all_values)} data points")
         # Show first few values
-        sorted_dates = sorted(values.keys())[:3]
+        sorted_dates = sorted(all_values.keys())[:3]
         # Print the first few date-value pairs for this country.
         for date in sorted_dates:
             # Print the date and the corresponding temperature value for this country.
-            print(f"    {date}: {values[date]}°C")
+            print(f"    {date}: {all_values[date]}°C")
 
     ## TemperaturePlotter tests
     # Create some test data
