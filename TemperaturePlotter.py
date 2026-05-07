@@ -1,6 +1,10 @@
+# TemperaturePlotter.py
 import matplotlib.pyplot as plt
+# 'Dict' is a type hint for dictionaries, which are collections of key-value pairs.
 from typing import Dict
+# 'datetime' is a module for working with dates and times in Python.
 import datetime
+# 'os' is a module for interacting with the operating system, used here to handle file paths and directories.
 import os
 
 
